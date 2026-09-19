@@ -202,7 +202,7 @@ export function answerContractQuestion(contracts: Contract[], query: string, sco
 
 export interface ComparisonRow { label:string; a:string; b:string; changed:boolean; }
 export function compareContracts(a: Contract, b: Contract): ComparisonRow[] {
-  const rows: ComparisonRow[] = [
+  const rows: Array<[string, string, string]> = [
     ['Type', a.type, b.type],
     ['Counterparty', a.counterparty.name, b.counterparty.name],
     ['Effective date', a.metadata.effectiveDate, b.metadata.effectiveDate],
@@ -214,7 +214,7 @@ export function compareContracts(a: Contract, b: Contract): ComparisonRow[] {
     ['Clause coverage', `${a.clauses.length} indexed`, `${b.clauses.length} indexed`],
     ['Obligations', `${a.obligations.length} indexed`, `${b.obligations.length} indexed`],
   ];
-  return rows.map(([label,x,y]) => ({label,a:x,b:y,changed:x!==y}));
+  return rows.map(([label, x, y]) => ({ label, a: x, b: y, changed: x !== y }));
 }
 
 export function portfolioMetrics(contracts: Contract[]) {
@@ -232,12 +232,14 @@ export function portfolioMetrics(contracts: Contract[]) {
   };
 }
 
-export function compareVersions(a: ContractVersion, b: ContractVersion) {
-  return [
+export function compareVersions(a?: ContractVersion, b?: ContractVersion): ComparisonRow[] {
+  if (!a || !b) return [];
+  const rows: Array<[string, string, string]> = [
     ['Version', a.versionNumber, b.versionNumber],
     ['File', a.fileName, b.fileName],
     ['SHA-256', a.sha256Checksum, b.sha256Checksum],
     ['Uploaded', a.uploadedAt, b.uploadedAt],
     ['Notes', a.changelogNotes, b.changelogNotes],
-  ].map(([label,x,y]) => ({label,a:x,b:y,changed:x!==y}));
+  ];
+  return rows.map(([label, x, y]) => ({ label, a: x, b: y, changed: x !== y }));
 }
