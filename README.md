@@ -169,9 +169,10 @@ The workflow:
 2. runs TypeScript validation
 3. runs tests
 4. creates the production Vite build
-5. publishes `dist` to GitHub Pages
+5. uploads the `dist` Pages artifact
+6. deploys it to GitHub Pages
 
-In the GitHub repository, enable **Settings → Pages → Source: GitHub Actions**.
+**One-time GitHub setup:** open **Settings → Pages → Build and deployment → Source** and select **GitHub Actions**. This is required before the first Pages deployment; the workflow intentionally does not attempt to create/enable Pages with a personal access token.
 
 The Vite config uses relative asset paths so the application works when served from a repository subpath.
 
